@@ -73,6 +73,8 @@ func (Ticker) Read() error {
 
 			l := tickerFetch(k, url)
 
+			p = strings.ToLower(strings.Replace(p, "-", "", -1))
+
 			vl := api.ValueList{
 				Identifier: api.Identifier{
 					Host:           exec.Hostname(),
