@@ -66,12 +66,25 @@ func (Ticker) Read() error {
 		entry := j[k].(map[string]interface{})
 		baseurl := entry["url"].(string)
 		pairs := entry["pairs"]
+
+		convert, doconv := entry["convert"].(string)
+
+		var conv float64
+
+		if doconv {
+			conv = tickerFetch(k, baseurl+convert)
+		}
+
 		// iterate through pairs
 		for _, c := range pairs.([]interface{}) {
 			p := c.(string)
 			url := baseurl + p
 
 			l := tickerFetch(k, url)
+
+			if doconv {
+				l = l * conv
+			}
 
 			p = strings.ToLower(strings.Replace(p, "-", "", -1))
 
