@@ -26,25 +26,34 @@ func errHandle(errMsg error) {
 
 }
 
-func tickerFetch(url string) string {
+func tickerFetch(exchange string, url string) float64 {
 	resp, getErr := http.Get(url)
 	errHandle(getErr)
 
 	body, readErr := ioutil.ReadAll(resp.Body)
 	errHandle(readErr)
 
-	res := make(map[string]string)
+	res := make(map[string]interface{})
 
 	errHandle(json.Unmarshal(body, &res))
 
-	return res["last"]
+	switch exchange {
+	case "bitstamp":
+		l, errConv := strconv.ParseFloat(res["last"].(string), 64)
+		errHandle(errConv)
+		return l
+	case "bittrex":
+		result := res["result"].(map[string]interface{})
+		return result["Last"].(float64)
+	default:
+		log.Fatal("Unsupported exchange")
+		return 0.0
+	}
 }
 
 type Ticker struct{}
 
 func (Ticker) Read() error {
-
-	var v string
 
 	tickercf, readErr := ioutil.ReadFile("ticker.json")
 	errHandle(readErr)
@@ -59,16 +68,16 @@ func (Ticker) Read() error {
 		pairs := entry["pairs"]
 		// iterate through pairs
 		for _, c := range pairs.([]interface{}) {
-			url := baseurl + c.(string) + "/"
+			p := c.(string)
+			url := baseurl + p
 
-			l, convErr := strconv.ParseFloat(tickerFetch(url), 64)
-			errHandle(convErr)
+			l := tickerFetch(k, url)
 
 			vl := api.ValueList{
 				Identifier: api.Identifier{
 					Host:           exec.Hostname(),
 					Plugin:         progname,
-					PluginInstance: v,
+					PluginInstance: p,
 					Type:           "gauge",
 				},
 				Time:     time.Now(),
