@@ -77,7 +77,7 @@ func (Ticker) Read() error {
 				Identifier: api.Identifier{
 					Host:           exec.Hostname(),
 					Plugin:         progname,
-					PluginInstance: p,
+					PluginInstance: strings.Replace(p, "-", "", -1),
 					Type:           "gauge",
 				},
 				Time:     time.Now(),
