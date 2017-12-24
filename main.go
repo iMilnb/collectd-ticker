@@ -44,35 +44,44 @@ type Ticker struct{}
 
 func (Ticker) Read() error {
 
-	var url string
 	var v string
-	var l float64
-	var convErr error
 
-	pairs := []string{"ethusd", "xrpusd", "ltcusd", "btcusd"}
+	tickercf, readErr := ioutil.ReadFile("ticker.json")
+	errHandle(readErr)
 
-	for _, v = range pairs {
-		url = "https://www.bitstamp.net/api/v2/ticker/" + v + "/"
-		l, convErr = strconv.ParseFloat(tickerFetch(url), 64)
-		errHandle(convErr)
+	j := make(map[string]interface{})
+	json.Unmarshal(tickercf, &j)
 
-		vl := api.ValueList{
-			Identifier: api.Identifier{
-				Host:           exec.Hostname(),
-				Plugin:         progname,
-				PluginInstance: v,
-				Type:           "gauge",
-			},
-			Time:     time.Now(),
-			Interval: 60 * time.Second,
-			Values:   []api.Value{api.Gauge(l)},
-		}
+	// iterate through exchanges
+	for k := range j {
+		entry := j[k].(map[string]interface{})
+		baseurl := entry["url"].(string)
+		pairs := entry["pairs"]
+		// iterate through pairs
+		for _, c := range pairs.([]interface{}) {
+			url := baseurl + c.(string) + "/"
 
-		if clicall {
-			exec.Putval.Write(context.Background(), &vl)
-		} else {
-			if err := plugin.Write(&vl); err != nil {
-				plugin.Error(err)
+			l, convErr := strconv.ParseFloat(tickerFetch(url), 64)
+			errHandle(convErr)
+
+			vl := api.ValueList{
+				Identifier: api.Identifier{
+					Host:           exec.Hostname(),
+					Plugin:         progname,
+					PluginInstance: v,
+					Type:           "gauge",
+				},
+				Time:     time.Now(),
+				Interval: 60 * time.Second,
+				Values:   []api.Value{api.Gauge(l)},
+			}
+
+			if clicall {
+				exec.Putval.Write(context.Background(), &vl)
+			} else {
+				if err := plugin.Write(&vl); err != nil {
+					plugin.Error(err)
+				}
 			}
 		}
 
@@ -82,6 +91,7 @@ func (Ticker) Read() error {
 }
 
 func init() {
+
 	switch clicall {
 	case false:
 		plugin.RegisterRead(progname, &Ticker{})
