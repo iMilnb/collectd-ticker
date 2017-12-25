@@ -63,7 +63,7 @@ Interval 60
 LoadPlugin ticker
 ```
 
-[collectd-go][5] does not support [collectd][1] configuration framework, so it has its own configuration file, which is expected to be located in `/etc/collectd`. It is a `JSON` formatted file composed of
+[collectd-go][5] does not support [collectd][1] configuration framework, so `ticker` has its own configuration file, which is expected to be located in `/etc/collectd` and named `ticker.json`. It is a `JSON` formatted file composed of
 
 * The exchange name
 * The exchange API base URL
