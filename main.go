@@ -24,7 +24,6 @@ func errHandle(errMsg error) {
 	if errMsg != nil {
 		log.Fatal(errMsg)
 	}
-
 }
 
 func tickerFetch(exchange string, url string) float64 {
@@ -108,7 +107,6 @@ func (Ticker) Read() error {
 				}
 			}
 		}
-
 	}
 
 	return nil
