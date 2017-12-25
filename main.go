@@ -85,7 +85,7 @@ func (Ticker) Read() error {
 
 			l := tickerFetch(k, url) * factor
 
-			if l < 0.0 {
+			if l <= 0.0 {
 				return nil
 			}
 
