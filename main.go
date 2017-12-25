@@ -17,6 +17,7 @@ import (
 )
 
 var progname = "ticker"
+var conffile = "/etc/collectd/ticker.json"
 var clicall = strings.Contains(os.Args[0], progname)
 
 func errHandle(errMsg error) {
@@ -55,7 +56,7 @@ type Ticker struct{}
 
 func (Ticker) Read() error {
 
-	tickercf, readErr := ioutil.ReadFile("ticker.json")
+	tickercf, readErr := ioutil.ReadFile(conffile)
 	errHandle(readErr)
 
 	j := make(map[string]interface{})
