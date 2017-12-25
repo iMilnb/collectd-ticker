@@ -65,9 +65,9 @@ LoadPlugin ticker
 
 [collectd-go][5] does not support [collectd][1] configuration framework, so `ticker` has its own configuration file, which is expected to be located in `/etc/collectd` and named `ticker.json`. It is a `JSON` formatted file composed of
 
-* The exchange name
-* The exchange API base URL
-* The cryptocurrencies pairs you'd like to monitor
+* Exchange name
+* Exchange API base URL
+* Cryptocurrencies pairs you'd like to monitor. The pairs must be in the format required by the associated exchange
 * Optional: a conversion pair. For example, [Bittrex][6] does not offer `USD` pairs, but has a `BTC/USDT` pair, adding a conversion pair will multiply listed pairs with this factor.
 
 Example
@@ -84,7 +84,12 @@ $ cat ticker.json
     {
       "url": "https://bittrex.com/api/v1.1/public/getticker?market=",
       "pairs": ["BTC-XEM", "BTC-FUN", "BTC-XVG"],
-      "convert": "USDT-BTC"
+      "convert": "USDT-BTC",
+    },
+  "hitbtc":
+    {
+      "url": "https://api.hitbtc.com/api/2/public/ticker/",
+      "pairs": ["ETCUSD", "BCCUSD"]
     }
 }
 ```
