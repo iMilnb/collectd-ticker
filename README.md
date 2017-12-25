@@ -104,7 +104,7 @@ PUTVAL "tatooine/ticker-btcxvg/gauge" interval=60.000 1514193797.562:0.217641770
 
 #### Exchanges
 
-For now, `ticker` supports [Bitstamp][9] and [Bittrex][6].
+For now, `ticker` supports [Bitstamp][9], [Bittrex][6] and [HitBTC][10].
 
 #### Show your appreciation
 
@@ -123,3 +123,4 @@ If you like the software, feel free to send a tip ;)
 [7]: https://www.influxdata.com/
 [8]: https://grafana.com/
 [9]: https://www.bitstamp.net/
+[10]: https://hitbtc.com/

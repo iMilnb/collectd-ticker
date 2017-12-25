@@ -38,7 +38,7 @@ func tickerFetch(exchange string, url string) float64 {
 	errHandle(json.Unmarshal(body, &res))
 
 	switch exchange {
-	case "bitstamp":
+	case "bitstamp", "hitbtc":
 		if res["last"] != nil {
 			l, errConv := strconv.ParseFloat(res["last"].(string), 64)
 			errHandle(errConv)
@@ -122,6 +122,9 @@ func init() {
 	case false:
 		plugin.RegisterRead(progname, &Ticker{})
 	default:
+		if len(os.Args) > 1 {
+			conffile = os.Args[1]
+		}
 		Ticker{}.Read()
 	}
 }
