@@ -1,0 +1,13 @@
+{
+  "bitstamp":
+    {
+      "url": "https://www.bitstamp.net/api/v2/ticker/",
+      "pairs": ["ethusd", "xrpusd", "ltcusd", "btcusd"]
+    },
+  "bittrex":
+    {
+      "url": "https://bittrex.com/api/v1.1/public/getticker?market=",
+      "pairs": ["BTC-XEM", "BTC-FUN", "BTC-XVG"],
+      "convert": "USDT-BTC"
+    }
+}
