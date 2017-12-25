@@ -110,9 +110,9 @@ For now, `ticker` supports [Bitstamp][9] and [Bittrex][6].
 
 If you like the software, feel free to send a tip ;)
 
-Bitcoin: ***REMOVED***
-Ethereum: ***REMOVED***
-Litecoin: ***REMOVED***
+Bitcoin: ***REMOVED***  
+Ethereum: ***REMOVED***  
+Litecoin: ***REMOVED***  
 
 [1]: https://collectd.org/
 [2]: https://golang.org/
