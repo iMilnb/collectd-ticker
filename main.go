@@ -53,7 +53,7 @@ func tickerFetch(exchange string, url string) float64 {
 		log.Fatal("Unsupported exchange")
 	}
 
-	return 0.0
+	return -1.0
 }
 
 type Ticker struct{}
@@ -83,7 +83,11 @@ func (Ticker) Read() error {
 			p := c.(string)
 			url := baseurl + p
 
-			l := tickerFetch(k, url)
+			l := tickerFetch(k, url) * factor
+
+			if l < 0.0 {
+				return nil
+			}
 
 			p = strings.ToLower(strings.Replace(p, "-", "", -1))
 
@@ -96,7 +100,7 @@ func (Ticker) Read() error {
 				},
 				Time:     time.Now(),
 				Interval: 60 * time.Second,
-				Values:   []api.Value{api.Gauge(l * factor)},
+				Values:   []api.Value{api.Gauge(l)},
 			}
 
 			if clicall {
