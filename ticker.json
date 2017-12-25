@@ -14,5 +14,10 @@
     {
       "url": "https://api.hitbtc.com/api/2/public/ticker/",
       "pairs": ["ETCUSD", "BCCUSD"]
+    },
+  "bitfinex":
+    {
+      "url": "https://api.bitfinex.com/v1/pubticker/",
+      "pairs": ["neousd", "btgusd"]
     }
 }
