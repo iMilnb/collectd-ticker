@@ -60,7 +60,7 @@ func (Ticker) Read() error {
 	errHandle(readErr)
 
 	j := make(map[string]interface{})
-	json.Unmarshal(tickercf, &j)
+	errHandle(json.Unmarshal(tickercf, &j))
 
 	// iterate through exchanges
 	for k := range j {
@@ -69,6 +69,10 @@ func (Ticker) Read() error {
 		pairs := entry["pairs"]
 
 		convert, doconv := entry["convert"].(string)
+		factor := 1.0
+		if doconv {
+			factor = tickerFetch(k, baseurl+convert)
+		}
 
 		// iterate through pairs
 		for _, c := range pairs.([]interface{}) {
@@ -76,10 +80,6 @@ func (Ticker) Read() error {
 			url := baseurl + p
 
 			l := tickerFetch(k, url)
-
-			if doconv {
-				l = l * tickerFetch(k, baseurl+convert)
-			}
 
 			p = strings.ToLower(strings.Replace(p, "-", "", -1))
 
@@ -92,7 +92,7 @@ func (Ticker) Read() error {
 				},
 				Time:     time.Now(),
 				Interval: 60 * time.Second,
-				Values:   []api.Value{api.Gauge(l)},
+				Values:   []api.Value{api.Gauge(l * factor)},
 			}
 
 			if clicall {
