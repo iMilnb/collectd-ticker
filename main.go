@@ -92,7 +92,7 @@ func (Ticker) Read() error {
 				Identifier: api.Identifier{
 					Host:           exec.Hostname(),
 					Plugin:         progname,
-					PluginInstance: strings.Replace(p, "-", "", -1),
+					PluginInstance: p,
 					Type:           "gauge",
 				},
 				Time:     time.Now(),
