@@ -20,6 +20,12 @@ var progname = "ticker"
 var conffile = "/etc/collectd/ticker.json"
 var clicall = strings.Contains(os.Args[0], progname)
 
+var lastExchange = map[string]string{
+	"bitstamp": "last",
+	"hitbtc":   "last",
+	"bitfinex": "last_price",
+}
+
 func errHandle(errMsg error) {
 	if errMsg != nil {
 		log.Fatal(errMsg)
@@ -38,9 +44,10 @@ func tickerFetch(exchange string, url string) float64 {
 	errHandle(json.Unmarshal(body, &res))
 
 	switch exchange {
-	case "bitstamp", "hitbtc":
-		if res["last"] != nil {
-			l, errConv := strconv.ParseFloat(res["last"].(string), 64)
+	case "bitstamp", "hitbtc", "bitfinex":
+		last := res[lastExchange[exchange]]
+		if last != nil {
+			l, errConv := strconv.ParseFloat(last.(string), 64)
 			errHandle(errConv)
 			return l
 		}
