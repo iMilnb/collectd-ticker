@@ -34,11 +34,23 @@ To build the [Exec][4] version, type
 $ make exec
 ```
 
+To build both of them, simply type
+
+```
+$ make
+```
+ 
 You might need to modify [collectd][1] includes path in the `COLLECTD_SRC` variable from the `Makefile` depending on your distribution.
 
 #### Installation
 
-Copy the `ticker.so` plugin to [collectd][1] plugin directory, for example in a _Debian_ based system
+Use
+
+```
+$ make install
+```
+
+To install the plugin in [collectd][1] plugin directory as defined in the `Makefile`, or simply copy the `ticker.so` plugin to [collectd][1] plugin directory, for example in a _Debian_ based system
 
 ```
 $ cp ticker.so /usr/lib/collectd/

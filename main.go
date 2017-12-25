@@ -40,16 +40,21 @@ func tickerFetch(exchange string, url string) float64 {
 
 	switch exchange {
 	case "bitstamp":
-		l, errConv := strconv.ParseFloat(res["last"].(string), 64)
-		errHandle(errConv)
-		return l
+		if res["last"] != nil {
+			l, errConv := strconv.ParseFloat(res["last"].(string), 64)
+			errHandle(errConv)
+			return l
+		}
 	case "bittrex":
-		result := res["result"].(map[string]interface{})
-		return result["Last"].(float64)
+		if res["result"] != nil {
+			result := res["result"].(map[string]interface{})
+			return result["Last"].(float64)
+		}
 	default:
 		log.Fatal("Unsupported exchange")
-		return 0.0
 	}
+
+	return 0.0
 }
 
 type Ticker struct{}
