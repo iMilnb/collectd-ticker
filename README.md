@@ -94,12 +94,12 @@ PUTVAL "tatooine/ticker-btcxvg/gauge" interval=60.000 1514193797.562:0.217641770
 
 For now, `ticker` supports [Bitstamp][9] and [Bittrex][6].
 
-[1][https://collectd.org/]
-[2][https://golang.org/]
-[3][https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=827759]
-[4][https://collectd.org/wiki/index.php/Plugin:Exec]
-[5][https://github.com/collectd/go-collectd]
-[6][https://bittrex.com/]
-[7][https://www.influxdata.com/]
-[8][https://grafana.com/]
-[9][https://www.bitstamp.net/]
+[1]: [https://collectd.org/]
+[2]: [https://golang.org/]
+[3]: [https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=827759]
+[4]: [https://collectd.org/wiki/index.php/Plugin:Exec]
+[5]: [https://github.com/collectd/go-collectd]
+[6]: [https://bittrex.com/]
+[7]: [https://www.influxdata.com/]
+[8]: [https://grafana.com/]
+[9]: [https://www.bitstamp.net/]
