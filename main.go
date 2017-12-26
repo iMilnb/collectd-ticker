@@ -27,7 +27,7 @@ var lastExchange = map[string]string{
 	"bitfinex": "last_price",
 }
 
-func errHandle(errMsg error) {
+func fatalErrHandle(errMsg error) {
 	if errMsg != nil {
 		log.Fatal(errMsg)
 	}
@@ -36,16 +36,20 @@ func errHandle(errMsg error) {
 func tickerFetch(exchange string, url string) float64 {
 	resp, getErr := http.Get(url)
 	if getErr != nil {
+		log.Print(getErr)
 		return nerr
 	}
 
 	body, readErr := ioutil.ReadAll(resp.Body)
 	if readErr != nil {
+		log.Print(readErr)
 		return nerr
 	}
 
 	res := make(map[string]interface{})
-	if json.Unmarshal(body, &res) != nil {
+	jsonErr := json.Unmarshal(body, &res)
+	if jsonErr != nil {
+		log.Print(jsonErr)
 		return nerr
 	}
 
@@ -57,6 +61,7 @@ func tickerFetch(exchange string, url string) float64 {
 			if errConv == nil {
 				return l
 			}
+			log.Print(errConv)
 		}
 	case "bittrex":
 		if res["result"] != nil {
@@ -75,10 +80,10 @@ type Ticker struct{}
 func (Ticker) Read() error {
 
 	tickercf, readErr := ioutil.ReadFile(conffile)
-	errHandle(readErr)
+	fatalErrHandle(readErr)
 
 	j := make(map[string]interface{})
-	errHandle(json.Unmarshal(tickercf, &j))
+	fatalErrHandle(json.Unmarshal(tickercf, &j))
 
 	// iterate through exchanges
 	for k := range j {
