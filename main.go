@@ -91,6 +91,9 @@ func (Ticker) Read() error {
 		factor := 1.0
 		if doconv {
 			factor = tickerFetch(k, baseurl+convert)
+			if factor <= 0.0 {
+				continue
+			}
 		}
 
 		// iterate through pairs
