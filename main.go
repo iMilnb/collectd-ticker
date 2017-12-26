@@ -45,8 +45,7 @@ func tickerFetch(exchange string, url string) float64 {
 	}
 
 	res := make(map[string]interface{})
-	jsonErr := json.Unmarshal(body, &res)
-	if jsonErr != nil {
+	if json.Unmarshal(body, &res) != nil {
 		return nerr
 	}
 
