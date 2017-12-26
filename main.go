@@ -19,6 +19,7 @@ import (
 var progname = "ticker"
 var conffile = "/etc/collectd/ticker.json"
 var clicall = strings.Contains(os.Args[0], progname)
+var nerr = -1.0
 
 var lastExchange = map[string]string{
 	"bitstamp": "last",
@@ -34,22 +35,29 @@ func errHandle(errMsg error) {
 
 func tickerFetch(exchange string, url string) float64 {
 	resp, getErr := http.Get(url)
-	errHandle(getErr)
+	if getErr != nil {
+		return nerr
+	}
 
 	body, readErr := ioutil.ReadAll(resp.Body)
-	errHandle(readErr)
+	if readErr != nil {
+		return nerr
+	}
 
 	res := make(map[string]interface{})
-
-	errHandle(json.Unmarshal(body, &res))
+	jsonErr := json.Unmarshal(body, &res)
+	if jsonErr != nil {
+		return nerr
+	}
 
 	switch exchange {
 	case "bitstamp", "hitbtc", "bitfinex":
 		last := res[lastExchange[exchange]]
 		if last != nil {
 			l, errConv := strconv.ParseFloat(last.(string), 64)
-			errHandle(errConv)
-			return l
+			if errConv == nil {
+				return l
+			}
 		}
 	case "bittrex":
 		if res["result"] != nil {
@@ -60,7 +68,7 @@ func tickerFetch(exchange string, url string) float64 {
 		log.Fatal("Unsupported exchange")
 	}
 
-	return -1.0
+	return nerr
 }
 
 type Ticker struct{}
@@ -93,7 +101,7 @@ func (Ticker) Read() error {
 			l := tickerFetch(k, url) * factor
 
 			if l <= 0.0 {
-				return nil
+				continue
 			}
 
 			p = strings.ToLower(strings.Replace(p, "-", "", -1))
