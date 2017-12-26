@@ -1,0 +1,4 @@
+.*.sw*
+ticker
+ticker.so
+test.go
