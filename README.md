@@ -95,6 +95,12 @@ $ cat ticker.json
     {
       "url": "https://api.bitfinex.com/v1/pubticker/",
       "pairs": ["neousd", "btgusd"]
+    },
+  "binance":
+    {
+      "url": "https://api.binance.com/api/v1/ticker/price?symbol=",
+      "pairs": ["REQBTC"],
+      "convert": "BTCUSDT"
     }
 }
 ```
@@ -114,7 +120,7 @@ PUTVAL "tatooine/ticker-btcxvg/gauge" interval=60.000 1514193797.562:0.217641770
 
 #### Exchanges
 
-For now, `ticker` supports [Bitstamp][9], [Bittrex][6], [Bitfinex][11] and [HitBTC][10].
+For now, `ticker` supports [Bitstamp][9], [Bittrex][6], [Bitfinex][11], [Binance][12] and [HitBTC][10].
 
 #### Show your appreciation
 
@@ -135,3 +141,4 @@ If you like the software, feel free to send a tip ;)
 [9]: https://www.bitstamp.net/
 [10]: https://hitbtc.com/
 [11]: https://www.bitfinex.com/
+[12]: https://www.binance.com/

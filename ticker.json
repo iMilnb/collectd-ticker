@@ -19,5 +19,11 @@
     {
       "url": "https://api.bitfinex.com/v1/pubticker/",
       "pairs": ["neousd", "btgusd"]
+    },
+  "binance":
+    {
+      "url": "https://api.binance.com/api/v1/ticker/price?symbol=",
+      "pairs": ["REQBTC"],
+      "convert": "BTCUSDT"
     }
 }

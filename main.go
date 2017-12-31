@@ -25,6 +25,7 @@ var lastExchange = map[string]string{
 	"bitstamp": "last",
 	"hitbtc":   "last",
 	"bitfinex": "last_price",
+	"binance":  "price",
 }
 
 func fatalErrHandle(errMsg error) {
@@ -54,7 +55,7 @@ func tickerFetch(exchange string, url string) float64 {
 	}
 
 	switch exchange {
-	case "bitstamp", "hitbtc", "bitfinex":
+	case "bitstamp", "hitbtc", "bitfinex", "binance":
 		last := res[lastExchange[exchange]]
 		if last != nil {
 			l, errConv := strconv.ParseFloat(last.(string), 64)
