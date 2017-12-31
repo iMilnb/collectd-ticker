@@ -2,28 +2,40 @@
   "bitstamp":
     {
       "url": "https://www.bitstamp.net/api/v2/ticker/",
-      "pairs": ["ethusd", "xrpusd", "ltcusd", "btcusd"]
+      "pairs": ["ethusd", "xrpusd", "ltcusd", "btcusd"],
+      "pricekey": "last"
     },
   "bittrex":
     {
       "url": "https://bittrex.com/api/v1.1/public/getticker?market=",
       "pairs": ["BTC-XEM", "BTC-FUN", "BTC-XVG"],
-      "convert": "USDT-BTC"
+      "convert": "USDT-BTC",
+      "pricekey": "Last"
     },
   "hitbtc":
     {
       "url": "https://api.hitbtc.com/api/2/public/ticker/",
-      "pairs": ["ETCUSD", "BCCUSD"]
+      "pairs": ["COSSBTC"],
+      "convert": "BTCUSD",
+      "pricekey": "last"
     },
   "bitfinex":
     {
       "url": "https://api.bitfinex.com/v1/pubticker/",
-      "pairs": ["neousd", "btgusd"]
+      "pairs": ["neousd", "btgusd"],
+      "pricekey": "last_price"
     },
   "binance":
     {
       "url": "https://api.binance.com/api/v1/ticker/price?symbol=",
-      "pairs": ["REQBTC"],
-      "convert": "BTCUSDT"
+      "pairs": ["REQBTC", "LINKBTC"],
+      "convert": "BTCUSDT",
+      "pricekey": "price"
+    },
+  "coinmarketcap":
+    {
+      "url": "https://api.coinmarketcap.com/v1/ticker/",
+      "pairs": ["kin", "electroneum"],
+      "pricekey": "price_usd"
     }
 }

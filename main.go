@@ -16,17 +16,12 @@ import (
 	"collectd.org/plugin"
 )
 
-var progname = "ticker"
-var conffile = "/etc/collectd/ticker.json"
-var clicall = strings.Contains(os.Args[0], progname)
-var nerr = -1.0
-
-var lastExchange = map[string]string{
-	"bitstamp": "last",
-	"hitbtc":   "last",
-	"bitfinex": "last_price",
-	"binance":  "price",
-}
+var (
+	progname = "ticker"
+	conffile = "/etc/collectd/ticker.json"
+	clicall  = strings.Contains(os.Args[0], progname)
+	nerr     = -1.0
+)
 
 func fatalErrHandle(errMsg error) {
 	if errMsg != nil {
@@ -34,7 +29,7 @@ func fatalErrHandle(errMsg error) {
 	}
 }
 
-func tickerFetch(exchange string, url string) float64 {
+func tickerFetch(exchange string, url string, pricekey string) float64 {
 	resp, getErr := http.Get(url)
 	if getErr != nil {
 		log.Print(getErr)
@@ -47,16 +42,24 @@ func tickerFetch(exchange string, url string) float64 {
 		return nerr
 	}
 
-	res := make(map[string]interface{})
-	jsonErr := json.Unmarshal(body, &res)
+	res := make([]map[string]interface{}, 1)
+	var jsonErr error
+
+	switch exchange {
+	case "coinmarketcap":
+		jsonErr = json.Unmarshal(body, &res)
+	default:
+		jsonErr = json.Unmarshal(body, &res[0])
+	}
+
 	if jsonErr != nil {
 		log.Print(jsonErr)
 		return nerr
 	}
 
 	switch exchange {
-	case "bitstamp", "hitbtc", "bitfinex", "binance":
-		last := res[lastExchange[exchange]]
+	case "bitstamp", "hitbtc", "bitfinex", "binance", "coinmarketcap":
+		last := res[0][pricekey]
 		if last != nil {
 			l, errConv := strconv.ParseFloat(last.(string), 64)
 			if errConv == nil {
@@ -65,9 +68,9 @@ func tickerFetch(exchange string, url string) float64 {
 			log.Print(errConv)
 		}
 	case "bittrex":
-		if res["result"] != nil {
-			result := res["result"].(map[string]interface{})
-			return result["Last"].(float64)
+		if res[0]["result"] != nil {
+			result := res[0]["result"].(map[string]interface{})
+			return result[pricekey].(float64)
 		}
 	default:
 		log.Fatal("Unsupported exchange")
@@ -91,11 +94,12 @@ func (Ticker) Read() error {
 		entry := j[k].(map[string]interface{})
 		baseurl := entry["url"].(string)
 		pairs := entry["pairs"]
+		pricekey := entry["pricekey"].(string)
 
 		convert, doconv := entry["convert"].(string)
 		factor := 1.0
 		if doconv {
-			factor = tickerFetch(k, baseurl+convert)
+			factor = tickerFetch(k, baseurl+convert, pricekey)
 			if factor <= 0.0 {
 				continue
 			}
@@ -106,7 +110,7 @@ func (Ticker) Read() error {
 			p := c.(string)
 			url := baseurl + p
 
-			l := tickerFetch(k, url) * factor
+			l := tickerFetch(k, url, pricekey) * factor
 
 			if l <= 0.0 {
 				continue

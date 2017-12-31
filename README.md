@@ -68,39 +68,51 @@ LoadPlugin ticker
 * Exchange name
 * Exchange API base URL
 * Cryptocurrencies pairs you'd like to monitor. The pairs must be in the format required by the associated exchange
+* Name of the JSON key for currency "last price"
 * Optional: a conversion pair. For example, [Bittrex][6] does not offer `USD` pairs, but has a `BTC/USDT` pair, adding a conversion pair will multiply listed pairs with this factor.
 
 Example
 
 ```
-$ cat ticker.json
 {
   "bitstamp":
     {
       "url": "https://www.bitstamp.net/api/v2/ticker/",
-      "pairs": ["ethusd", "xrpusd", "ltcusd", "btcusd"]
+      "pairs": ["ethusd", "xrpusd", "ltcusd", "btcusd"],
+      "pricekey": "last"
     },
   "bittrex":
     {
       "url": "https://bittrex.com/api/v1.1/public/getticker?market=",
       "pairs": ["BTC-XEM", "BTC-FUN", "BTC-XVG"],
       "convert": "USDT-BTC",
+      "pricekey": "Last"
     },
   "hitbtc":
     {
       "url": "https://api.hitbtc.com/api/2/public/ticker/",
-      "pairs": ["ETCUSD", "BCCUSD"]
+      "pairs": ["COSSBTC"],
+      "convert": "BTCUSD",
+      "pricekey": "last"
     },
   "bitfinex":
     {
       "url": "https://api.bitfinex.com/v1/pubticker/",
-      "pairs": ["neousd", "btgusd"]
+      "pairs": ["neousd", "btgusd"],
+      "pricekey": "last_price"
     },
   "binance":
     {
       "url": "https://api.binance.com/api/v1/ticker/price?symbol=",
-      "pairs": ["REQBTC"],
-      "convert": "BTCUSDT"
+      "pairs": ["REQBTC", "LINKBTC"],
+      "convert": "BTCUSDT",
+      "pricekey": "price"
+    },
+  "coinmarketcap":
+    {
+      "url": "https://api.coinmarketcap.com/v1/ticker/",
+      "pairs": ["kin", "electroneum"],
+      "pricekey": "price_usd"
     }
 }
 ```
@@ -120,7 +132,7 @@ PUTVAL "tatooine/ticker-btcxvg/gauge" interval=60.000 1514193797.562:0.217641770
 
 #### Exchanges
 
-For now, `ticker` supports [Bitstamp][9], [Bittrex][6], [Bitfinex][11], [Binance][12] and [HitBTC][10].
+For now, `ticker` supports [Coinmarketcap][13], [Bitstamp][9], [Bittrex][6], [Bitfinex][11], [Binance][12] and [HitBTC][10].
 
 #### Show your appreciation
 
@@ -142,3 +154,4 @@ If you like the software, feel free to send a tip ;)
 [10]: https://hitbtc.com/
 [11]: https://www.bitfinex.com/
 [12]: https://www.binance.com/
+[13]: https://coinmarketcap.com/
