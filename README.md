@@ -68,7 +68,7 @@ LoadPlugin ticker
 * Exchange name
 * Exchange API base URL
 * Cryptocurrencies pairs you'd like to monitor. The pairs must be in the format required by the associated exchange
-* Name of the JSON key for currency "last price"
+* Name of the JSON key for currency "last price" in this exchange
 * Optional: a conversion pair. For example, [Bittrex][6] does not offer `USD` pairs, but has a `BTC/USDT` pair, adding a conversion pair will multiply listed pairs with this factor.
 
 Example
