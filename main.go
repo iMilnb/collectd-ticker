@@ -70,7 +70,9 @@ func tickerFetch(exchange string, url string, pricekey string) float64 {
 	case "bittrex":
 		if res[0]["result"] != nil {
 			result := res[0]["result"].(map[string]interface{})
-			return result[pricekey].(float64)
+			if result != nil && result[pricekey] != nil {
+				return result[pricekey].(float64)
+			}
 		}
 	default:
 		log.Fatal("Unsupported exchange")
