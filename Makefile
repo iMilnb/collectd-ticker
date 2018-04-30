@@ -1,7 +1,7 @@
 EXEC=ticker
 PLUGIN=${EXEC}.so
 
-COLLECTD_SRC=/usr/include/collectd/core
+COLLECTD_SRC?=/usr/include/collectd/core
 BUILD_FLAGS=CGO_CPPFLAGS="-I${COLLECTD_SRC}/daemon -I${COLLECTD_SRC}"
 
 PLUGIN_DIR=/usr/lib/collectd
